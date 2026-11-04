@@ -1,3 +1,35 @@
-/.DS_Store
-*/target
+
+# Maven
+target/
+*.class
+*.jar
+
+# IDE
+.idea/
 .vscode/
+*.iml
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# AWS credentials and secrets
+credentials.json
+*.pem
+*.key
+*.p12
+*.jks
+secrets/
+
+# Local configuration
+application-local.yml
+application-local.properties
+
+# OS
+.DS_Store
+Thumbs.db
