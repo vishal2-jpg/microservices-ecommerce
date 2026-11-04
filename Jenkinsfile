@@ -3,34 +3,53 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
-                echo 'Source code checked out'
+                echo 'Source code checked out successfully'
             }
         }
 
-        stage('User Service') {
+        stage('Check Environment') {
             steps {
-                echo 'Building User Service'
+                sh '''
+                    java -version
+                    mvn -version
+                '''
             }
         }
 
-        stage('Product Service') {
+        stage('Build User Service') {
             steps {
-                echo 'Building Product Service'
+                dir('user-service') {
+                    sh 'mvn clean package -DskipTests'
+                }
             }
         }
 
-        stage('Order Service') {
+        stage('Build Product Service') {
             steps {
-                echo 'Building Order Service'
+                dir('product-service') {
+                    sh 'mvn clean package -DskipTests'
+                }
             }
         }
 
-        stage('Build Completed') {
+        stage('Build Order Service') {
             steps {
-                echo 'All microservice stages completed'
+                dir('order-service') {
+                    sh 'mvn clean package -DskipTests'
+                }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'All three microservices built successfully!'
+        }
+        failure {
+            echo 'Microservices build failed. Check console output.'
         }
     }
 }
